@@ -19,19 +19,17 @@ public class No139 {
     private boolean doBreak(String s, Set<String> set, int index, Boolean[][] canBreak){
         if(set.contains(s.substring(index)))
             return true;
-        if(index >= s.length())
-            return false;
 
         boolean result = false;
         for(int i = index+1; i < s.length()+1; i++){
             if(canBreak[index][i-1] == null) {
                 String sub = s.substring(index, i);
                 if (set.contains(sub) && doBreak(s, set, i, canBreak)) {
-                    canBreak[index][i-1] = true;
+                    canBreak[index][i-1] = Boolean.TRUE;
                     result = true;
                     break;
                 }
-                canBreak[index][i-1] = false;
+                canBreak[index][i-1] = Boolean.FALSE;
             }else{
                 result = canBreak[index][i-1];
             }
