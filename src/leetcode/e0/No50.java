@@ -1,4 +1,4 @@
-package leetcode;
+package leetcode.e0;
 
 /**
  * Created by txwyy123 on 18/7/2.
