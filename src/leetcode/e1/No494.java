@@ -6,18 +6,20 @@ package leetcode.e1;
 public class No494 {
 
     public int findTargetSumWays(int[] nums, int S) {
-        if(nums.length == 0 && S != 0)
+        return doFind(nums, 0, S);
+    }
+
+    private int doFind(int[] nums, int index, int S){
+        if(index >= nums.length && S != 0)
             return 0;
-        if(nums.length == 1) {
-            if(nums[0] == 0 && S == 0)
+        if(index == nums.length-1){
+            if(nums[index] == 0 && S == 0)
                 return 2;
-            if(nums[0] == S || nums[0] == -S)
+            if(nums[index] == S || nums[index] == -S)
                 return 1;
         }
 
-        int[] copy = new int[nums.length-1];
-        System.arraycopy(nums, 1, copy, 0, copy.length);
-        return findTargetSumWays(copy, S-nums[0])+findTargetSumWays(copy, S+nums[0]);
+        return doFind(nums, index+1, S-nums[index])+doFind(nums, index+1, S+nums[index]);
     }
 
     public static void main(String[] args){
