@@ -1,9 +1,6 @@
 package leetcode.e2;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 /**
  * Created by txwyy123 on 18/7/4.
@@ -11,22 +8,31 @@ import java.util.PriorityQueue;
 public class No347 {
 
     public List<Integer> topKFrequent(int[] nums, int k) {
-        PriorityQueue<Integer> queue = new PriorityQueue<Integer>(
-            new Comparator<Integer>() {
-                @Override
-                public int compare(Integer o1, Integer o2) {
-                    return o1 > o2 ? 1 : (o1 == o2 ? 0 : -1);
-                }
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int num : nums){
+            if(!map.containsKey(num)){
+                map.put(num, 1);
+            }else{
+                map.put(num, map.get(num)+1);
             }
+        }
+
+        PriorityQueue<Map.Entry<Integer, Integer>> queue = new PriorityQueue<Map.Entry<Integer, Integer>>(
+                new Comparator<Map.Entry<Integer, Integer>>() {
+                    @Override
+                    public int compare(Map.Entry<Integer, Integer> o1, Map.Entry<Integer, Integer> o2) {
+                        return o2.getValue()-o1.getValue();
+                    }
+                }
         );
 
-        for(int num : nums){
-            queue.add(num);
+        for(Map.Entry entry : map.entrySet()){
+            queue.add(entry);
         }
 
         List<Integer> result = new ArrayList<>();
         for(int i = 0; i < k; i++){
-            result.add(queue.poll());
+            result.add(queue.poll().getKey());
         }
 
         return result;
