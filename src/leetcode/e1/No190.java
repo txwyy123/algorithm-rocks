@@ -15,6 +15,7 @@ public class No190 {
 
     public static void main(String[] args) {
         No190 no190 = new No190();
-        System.out.print(no190.reverseBits(123));
+        System.out.print(Integer.reverse(3563));
+        System.out.print(Integer.toBinaryString(-676331520));
     }
 }

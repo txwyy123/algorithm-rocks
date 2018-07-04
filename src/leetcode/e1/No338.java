@@ -19,8 +19,21 @@ public class No338 {
         return result;
     }
 
+    public int[] countBits1(int num) {
+        int[] ret = new int[num+1];
+        ret[0] = 0;
+        int pow = 1;
+        for(int i = 1; i <= num; i++){
+            ret[i] = i < pow ? ret[i-(pow>>1)]+1 : ret[i-pow]+1;
+            if(i == pow){
+                pow = pow << 1;
+            }
+        }
+        return ret;
+    }
+
     public static void main(String[] args){
         No338 no338 = new No338();
-        System.out.print(no338.countBits(5));
+        System.out.print(no338.countBits1(7));
     }
 }
