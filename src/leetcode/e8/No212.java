@@ -17,10 +17,13 @@ public class No212 {
 
         boolean[][] isVisited = new boolean[board.length][board[0].length];
         for(String word : words) {
+            outter:
             for (int i = 0; i < board.length; i++) {
                 for (int j = 0; j < board[i].length; j++) {
-                    if (doFind(board, word, isVisited, i, j, 0))
+                    if (doFind(board, word, isVisited, i, j, 0)) {
                         result.add(word);
+                        break outter;
+                    }
                 }
             }
         }
