@@ -10,54 +10,64 @@ import java.util.Set;
  */
 public class No212 {
 
+    class TrieNode{
+        TrieNode[] next = new TrieNode[26];
+        String word;
+    }
+
     public List<String> findWords(char[][] board, String[] words) {
         Set<String> result = new HashSet<>();
         if(board == null || words == null)
             return new ArrayList<>(result);
 
-        boolean[][] isVisited = new boolean[board.length][board[0].length];
-        for(String word : words) {
-            outter:
-            for (int i = 0; i < board.length; i++) {
-                for (int j = 0; j < board[i].length; j++) {
-                    if (doFind(board, word, isVisited, i, j, 0)) {
-                        result.add(word);
-                        break outter;
-                    }
-                }
-            }
-        }
+        TrieNode root = buildTree(words);
+        for(int i = 0; i < board.length; i++)
+            for(int j = 0; j < board[i].length; j++)
+                doFind(board, root, i, j, result);
         return new ArrayList<>(result);
     }
 
-    private boolean doFind(char[][] board, String word, boolean[][] isVisited, int i, int j, int index){
-        if(index >= word.length())
-            return true;
+    private void doFind(char[][] board, TrieNode p, int i, int j, Set<String> result){
+        char c = board[i][j];
+        if(c == '#' || p.next[c-'a'] == null)
+            return;
 
-        if(i < 0 || j < 0 || i >= board.length || j >= board[i].length
-                || (!word.isEmpty() && board[i][j] != word.charAt(index)))
-            return false;
-
-        boolean result = false;
-        if(!isVisited[i][j] && word.charAt(index) == board[i][j]){
-            isVisited[i][j] = true;
-            int ind = index+1;
-            result = doFind(board, word, isVisited, i+1, j, ind)
-                    || doFind(board, word, isVisited, i-1, j, ind)
-                    || doFind(board, word, isVisited, i, j+1, ind)
-                    || doFind(board, word, isVisited, i, j-1, ind);
-            isVisited[i][j] = false;
-        }else{
-            result = false;
+        p = p.next[c-'a'];
+        if(p.word != null){
+            result.add(p.word);
         }
 
-        return result;
+        board[i][j] = '#';
+        if(i > 0)
+            doFind(board, p, i-1, j, result);
+        if(j > 0)
+            doFind(board, p, i, j-1, result);
+        if(i < board.length-1)
+            doFind(board, p, i+1, j, result);
+        if(j < board[i].length-1)
+            doFind(board, p, i, j+1, result);
+        board[i][j] = c;
+    }
+
+    private TrieNode buildTree(String[] words){
+        TrieNode root = new TrieNode();
+        for(String str : words){
+            TrieNode p = root;
+            for(char c : str.toCharArray()){
+                TrieNode node = p.next[c-'a'];
+                if(node == null)
+                    p.next[c-'a'] = new TrieNode();
+                p = p.next[c-'a'];
+            }
+            p.word = str;
+        }
+        return root;
     }
 
     public static void main(String[] args){
         No212 no212 = new No212();
-        char[][] a = {{'a'}};
-        String[] words = {"a", "a"};
+        char[][] a = {{'a','b'},{'a','a'}};
+        String[] words = {"aba","baa","bab","aaab","aaa","aaaa","aaba"};
         no212.findWords(a, words);
     }
 
