@@ -1,5 +1,6 @@
 package leetcode.e19;
 
+import java.util.Stack;
 import java.util.TreeMap;
 
 /**
@@ -11,28 +12,21 @@ public class No456 {
         if(nums == null || nums.length < 3)
             return false;
 
-        int min = nums[0];
-        int max = nums[2];
-        int minIndex = 0;
-        int maxIndex = 2;
-
-        TreeMap<Integer, Integer> map = new TreeMap<>();
-        for(int i = 2; i < nums.length; i++)
-            map.put(nums[i], i);
-
-        for(int i = 1; i < nums.length-1; i++){
-            Integer temp = map.lowerKey(nums[i]);
-            max = temp == null ? max :temp;
-            maxIndex = map.get(max);
-
-            if(i > minIndex && max > min && i < maxIndex && nums[i] > max){
+        Stack<Integer> stack = new Stack<>();
+        int s3 = Integer.MIN_VALUE;
+        for(int i = nums.length-1; i >= 0; i--){
+            int s1 = nums[i];
+            if(s1 < s3)
                 return true;
-            }
 
-            if(nums[i] < min){
-                minIndex = i;
-                min = nums[i];
+            int max = Integer.MIN_VALUE;
+            while(!stack.isEmpty() && stack.peek() < s1) {
+                max = Math.max(max, stack.pop());
             }
+            s3 = max == Integer.MIN_VALUE ? s3 : max;
+
+            stack.push(s1);
+
         }
 
         return false;
@@ -40,7 +34,7 @@ public class No456 {
 
     public static void main(String[] args){
         No456 no456 = new No456();
-        int[] a = {3,1,4,2};
+        int[] a = {-2,1,2,-2,1,2};
         System.out.print(no456.find132pattern(a));
     }
 }
