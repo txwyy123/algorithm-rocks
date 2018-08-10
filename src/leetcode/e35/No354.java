@@ -19,28 +19,28 @@ public class No354 {
         });
 
         int result = 0;
-        Map<Integer, Integer> map = new HashMap<>();
+        int[] memo = new int[envelopes.length];
         for(int i = 0; i < envelopes.length; i++) {
-            result = Math.max(result, doFind(envelopes, i, map));
+            result = Math.max(result, doFind(envelopes, i, memo));
         }
         return result;
     }
 
-    private int doFind(int[][] envelopes, int index, Map<Integer, Integer> map){
+    private int doFind(int[][] envelopes, int index, int[] memo){
         if(index >= envelopes.length)
             return 0;
 
-        if(map.containsKey(index))
-            return map.get(index);
+        if(memo[index] != 0)
+            return memo[index];
 
         int result = 1;
         int[] first = envelopes[index];
         for(int i = index+1; i < envelopes.length; i++) {
             if(envelopes[i][0] > first[0] && envelopes[i][1] > first[1]){
-                result = Math.max(result, 1+doFind(envelopes, i, map));
+                result = Math.max(result, 1+doFind(envelopes, i, memo));
             }
         }
-        map.put(index, result);
+        memo[index] = result;
         return result;
     }
 
