@@ -1,8 +1,5 @@
 package leetcode.e47;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Created by txwyy123 on 18/8/22.
  */
