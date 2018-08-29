@@ -30,4 +30,10 @@ public class No301 {
         else // finished right to left
             ans.add(reversed);
     }
+
+    public static void main(String[] args){
+        No301 no301 = new No301();
+        String s = "(a)())()";
+        no301.removeInvalidParentheses(s);
+    }
 }
